@@ -171,4 +171,182 @@ The second argument is a function that contains the expectations to test
 
 - Files with .test.js or .test.tsx suffix.
 - Files with .spec.js or .spec.tsx suffix.
-- Files with .js or .tsx suffix in ****tests**** folders.
+- Files with .js or .tsx suffix in \***\*tests\*\*** folders.
+
+## Code Coverage
+
+A metric that can help us understand how much of our software code is tested.
+
+- **Statement coverage:** How many of the statements in the software code have been executed.
+- **Branches coverage:** How many of the branches of the control structures(if statements for instance) have been executed.
+- **Function coverage:** How many of the functions defined have been called and finally
+- **Line coverage:** How many of lines of source code have been tested.
+
+### Assertions
+
+When writing tests, we often need to check that values meet certain conditions.
+
+Assertions decide if a test passes or fails.
+
+**expect**
+
+expect(value)
+
+The argument should be the value that our code produces.
+
+Typically, we will use expect along with a “matcher” function to assert something about a value.
+
+A matcher can optionally accept an argument which is the correct expected value.
+
+**Summary:**
+
+Jest watch mode
+
+Filtering tests
+
+Grouping tests
+
+Filename conventions
+
+Code coverage
+
+Assertions
+
+## React Testing Library
+
+### What to test?
+
+Test components renders
+
+Test component renders with props
+
+Test components renders in different states
+
+Test components reacts to events
+
+### What not to test?
+
+Implementation details
+
+Third party code
+
+Code that is not from a user point of view
+
+### RTL Queries
+
+Every test we write generally involves the following basic steps.
+
+1. Render the component
+2. Find an element rendered by the component
+3. Assert against the element found in step 2 which will pass or fail the test
+
+To render the component, we use the render method from RTL.
+
+For assertion, we use expect passing in a value and combine it with a matcher function from jest or jest-dom.
+
+Queries are the methods that Testing Library provides to find elements on the page.
+
+### To find a single element on the page, we have -
+
+- **getBy..(application → application.test.tsx)**
+  getBy.. class of queries return the matching node for a query, and throw a descriptive error if no elements match or if more than one match is found.
+  ### The suffix can be one of Role, LabelText, PlaceHolderTest, Text, DisplayValue, AltText, Title and finally TestId.
+  - **getByRole**
+    getByRole queries for elements with the given role.
+    Role refers to the ARIA(Accessible Rich Internet Applications) role which provides semantic meaning to content to ensure people using assistive technologies are able to use them.
+    By default, many semantic elements in HTML have a role.
+    Button element has a button role, anchor element has a line role, h1 to h6 elements have a heading role, checkboxes have a checkbox role, radio buttons have a radio role and so on.
+    If we’re working with elements that do no have a default role or if we want to specify a different role, the role attribute can be used to add the desired role.
+    To use an anchor element as a button in the navbar, we can add role=’button’.
+  - **getByRole Options**
+    **name**
+    The accessible name is for simple cases equal to
+    1. the label of a form element.
+    2. the text content of a button or
+    3. the value of the aria-label attribute
+    **level, hidden, selected, checked, pressed**
+  - **getByLabelText**
+    getByLabelText will search for the label that matches the given test, then find the element associated with the labe.
+  - **getByPlaceholderText**
+    getByPlaceholderText will search for all elements with a placeholder attribute and find one that matches the given text.
+  - **getByText**
+    getByText will search for all elements that have a text node with textContent matching the given text.
+    Typically, we would use this to find paragraph, div or span elements.
+  - **getByDisplayValue**
+    getByDisplayValue returns the input, textarea or select element that has the matching display value.
+  - **getByAltText**
+    getByAltText will return the element that has the given alt text.
+    This method only supports elements which accept an alt attribute like <img>, <input>, <area> or custom HTML elements.
+  - **getByTitle**
+    getByTitle returns the element that has the matching title attribute.
+  - **getByTestId**
+    getByTestId returns the element that has the matching data-testid attribute.
+  ### Priority Order for Queries
+  “Your test should resemble how users interact with your code(component, page etc.) as much as possbile”
+  1. getByRole
+  2. getByLabelText
+  3. getByPlaceholderText
+  4. getByText
+  5. getByDisplayValue
+  6. getByAltText
+  7. getByTitle
+  8. getByTestId
+- **queryBy..**
+  Returns the matching node for a query, and return null if no elements match.
+  Useful for asserting an element that is not present.
+  Throws an error if more than one match is found.
+- findBy..
+  Returns a Promise which resolves when an element is found which matches the given query.
+  The promise is rejected if no element is found or if more than one element is found after a default timeout of 1000ms
+
+### **To find multiple elements on the page, we have -**
+
+- **getAllBy..**
+  Find multiple elements in the DOM.
+  getAllyBy returns an array of all matching nodes for a query, and throws an error if no elements match.
+  ### TextMatch
+  - TextMatch represents a type which can be either a
+    - **string**
+        <div>Hello Word</div>
+        
+        screen.getByText(’Hello World’) // full string match
+        
+        screen.getByText(’llo World’, {exact: false}) // substring match
+        
+        screen.getByText(’hello world’, {exact: false}) // ignore case
+
+    - **regex**
+        <div>Hello Word</div>
+        
+        screen.getByText(/World/) // substring match
+        
+        screen.getByText(/world/i) // substring match, ignore case
+        
+        screen.getByText(/^hello world$/i) // fullstring match, ignore case
+
+    - **function → custom function**
+      (content ?: string, element?: Element | null) ⇒ boolean
+        <div>Hello World</div>
+        
+        screen.getByText((content) ⇒ content.startsWith(’Hello’))
+
+- queryAllBy..
+  Returns an array of all matching nodes for a query, and return an empty array if no elements match.
+  **Note: All suffix can be one of Role, LabelText, PlaceHolderTest, Text, DisplayValue, AltText, Title and finally TestId will be included queryAllBy..**
+- findAllBy..
+  Returns a promise which resolves to an array of elements when any elements are found which match the given query.
+  The promise is rejected if no elements are found after a default timeout of 1000ms.
+
+### Manual Queries
+
+**RTL Queries**
+
+1. getBy & getAllBy
+2. queryBy & queryAllBy
+3. findBy & findAllBy
+
+Manual queries - we can use the regular querySelector DOM API to find elements.
+
+const {container} = render(<MyComponent/>)
+
+const foo = container.querySelector(’[data-foo=”bar”]’)
