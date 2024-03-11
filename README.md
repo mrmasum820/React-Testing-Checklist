@@ -264,7 +264,7 @@ Queries are the methods that Testing Library provides to find elements on the pa
     1. the label of a form element.
     2. the text content of a button or
     3. the value of the aria-label attribute
-    **level, hidden, selected, checked, pressed**
+       **level, hidden, selected, checked, pressed**
   - **getByLabelText**
     getByLabelText will search for the label that matches the given test, then find the element associated with the labe.
   - **getByPlaceholderText**
@@ -304,8 +304,11 @@ Queries are the methods that Testing Library provides to find elements on the pa
 - **getAllBy..**
   Find multiple elements in the DOM.
   getAllyBy returns an array of all matching nodes for a query, and throws an error if no elements match.
+
   ### TextMatch
+
   - TextMatch represents a type which can be either a
+
     - **string**
         <div>Hello Word</div>
         
@@ -350,3 +353,164 @@ Manual queries - we can use the regular querySelector DOM API to find elements.
 const {container} = render(<MyComponent/>)
 
 const foo = container.querySelector(’[data-foo=”bar”]’)
+
+### Debugging
+
+### Testing Playground Chrome Extension
+
+## User Interactions
+
+A click using a mouse or a keypress using a keyboard.
+
+Software has to respond to such interactions.
+
+Tests should ensure the interactions are handled as expected.
+
+### user-event
+
+A companion library for testing library that simulates user interactions by dispatching the events that would happen if the interaction took place in a browser.
+
+It is the recommended way to test user interactions with RTL.
+
+### fireEvent vs user-event
+
+fireEvent is a method form RTL which is used to dispatch DOM events.
+
+user-event simulates full interactions, which may fire multiple events and do additional checks along the way.
+
+For example, we can dispatch the change event on an input field using fireEvent.
+
+When a user types into a text box, the element has to be focused, and then keyboard and input events are fired and the selection and value on the element are manipulated as they type.
+
+user-event allows us to describe a user interaction instead of a concrete event. It adds visibility and intractability checks along the way and manipulates the DOM just like a user interaction in the browser would. It factors in that the browser e.g. wouldn’t let a user click a hidden element or type in a disabled text box.
+
+### Pointer Interactions(counter.test.tsx)
+
+**Convenience APIs**
+
+click()
+
+dblClick()
+
+tripleClick()
+
+hover()
+
+unhover()
+
+**Pointer APIs**
+
+pointer({keys: ‘[MouseLeft]’})
+
+pointer({keys: ‘[MouseLeft][Mouseright]’})
+
+pointer(‘[MouseLeft][Mouseright]’)
+
+pointer(‘[Mouseleft>]’)
+
+pointer(‘[/Mouseleft]’)
+
+### Keyboard Interactions(counter.test.tsx)
+
+**Utility API**
+
+type()
+
+clear()
+
+selectOptions()
+
+deselectOptions()
+
+upload()
+
+**Convenience API**
+
+tab()
+
+**Clipboard APIs**
+
+copy()
+
+cut()
+
+paste()
+
+**Keyboard API**
+
+keyboard(’foo’) // translate to: f,o,o
+
+keyboard(’{Shift>}A{/Shift}’) // translate to: Shift(down), A, Shift(up)
+
+**Summary:**
+
+user-event library.
+
+CRA installs user-event but needs to upgrade the latest version.
+
+Mouse and Keyboard interactions with Counter component.
+
+Mouse click events.
+
+Keyboard type and tab events.
+
+Convenience APIs, utility APIs, clipboard APIs.
+
+Pointer and keyboard APIs.
+
+## Providers(hooks → useCounter.text.js)
+
+Wrapper option for providers
+
+Custom render function
+
+Test custom react hooks
+
+act utility
+
+## Mocking(counter-two & users)
+
+Mock functions with jest
+
+Mock HTTP requests with MSW
+
+Handle error responses with MSW
+
+## Static analysis testing
+
+Process of verifying that our code meets certain expectations without actually running it.
+
+- Ensure consistent style and formatting.
+- Check for common mistakes and possible bugs.
+- Limit the complexity of code and
+- Verify type consistency.
+
+All types of tests run the code and then compare the outcome against known expected outputs to see if everything works OK.
+
+Static testing analyses aspects such as readability, consistency, error handling, type checking, and alignment with best practices.
+
+Testing checks if your code works or not, whereas static analysis checks if it is written well or not.
+
+### Static analysis testing tools
+
+- TypeScript
+- ESlint
+- Prettier
+- Husky
+- lint-staged
+
+### ESlint
+
+ESlint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
+
+### Prettier
+
+Prettier is an opinionated code formatter that ensures that all outputted code conforms to a consistent style.
+
+### Husky
+
+Husky is a tool that helps improve our commits and more.
+
+### lint-staged
+
+Run linters and formatters against staged git files.
